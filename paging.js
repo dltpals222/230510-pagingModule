@@ -192,5 +192,5 @@ const renderButtons = () => {
   paginationCtn.appendChild(buttonList);
 };
 
-renderContent(boardList);
+renderContent(boardList, page);
 renderButtons();

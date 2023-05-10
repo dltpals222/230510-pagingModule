@@ -8,14 +8,15 @@ const { multiAndSingleTagMaker } = all_mighty_editor;
 const renderContent = (parent, { total, currPage, pageContentCount, img }) => {
   whileRemoveChild(parent);
 
-  const first = total - (currPage - 1) * pageContentCount;
-  const second = total - currPage * pageContentCount;
-
-  for (let i = first; i >= 1 && second; i--) {
+  for (
+    let i = total - (currPage - 1) * pageContentCount;
+    i >= 1 && i > total - currPage * pageContentCount;
+    i--
+  ) {
     multiAndSingleTagMaker(parent, "form", "", 1, (element) => {
       multiAndSingleTagMaker(element, "img", { src: img });
       multiAndSingleTagMaker(element, "div", "", 1, (ele1) => {
-        makeContent(ele1);
+        makeContent(ele1, i);
       });
     });
   }

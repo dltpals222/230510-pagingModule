@@ -1,5 +1,5 @@
 //게시글 예제
-const makeContent = (element) => {
+const makeContent = (element, i) => {
   element.innerHTML = `
   <span>${i}</span>
   <span>게시물 제목</span>
