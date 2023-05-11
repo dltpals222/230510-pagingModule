@@ -1,5 +1,7 @@
 import all_mighty_editor from "./module/all_mighty_editor.js";
-import renderButtons from "./paging_render_button.js";
+import { whileRemoveChild } from "./paging_etc_module.js";
+import pagingMakeButton from "./paging_make_button.js";
+// import renderButtons from "./paging_render_button.js";
 import renderContent from "./paging_render_content.js";
 
 const { multiAndSingleTagMaker, kingGodFlexEditor, fontAndLayoutEditor } =
@@ -105,53 +107,53 @@ const paginationCtn = multiAndSingleTagMaker(root, "div", "pagination-ctn");
 //     renderButtons();
 //   });
 
-//   // 중간 페이지 버튼 처리
-//   let startPage =
-//     currPageGroup(page.currPage) * page.pageNumCount - (page.pageNumCount - 1);
-//   let endPage = currPageGroup(page.currPage) * page.pageNumCount;
+// // 중간 페이지 버튼 처리
+// let startPage =
+//   currPageGroup(page.currPage) * page.pageNumCount - (page.pageNumCount - 1);
+// let endPage = currPageGroup(page.currPage) * page.pageNumCount;
 
+// if (startPage < 1) {
+//   startPage = 1;
+//   endPage = currPageGroup(page.currPage) * page.pageNumCount - 1;
+// }
+// if (endPage > page.total) {
+//   endPage = page.total;
+//   startPage = endPage - page.pageNumCount + 1;
 //   if (startPage < 1) {
 //     startPage = 1;
-//     endPage = currPageGroup(page.currPage) * page.pageNumCount - 1;
 //   }
-//   if (endPage > page.total) {
-//     endPage = page.total;
-//     startPage = endPage - page.pageNumCount + 1;
-//     if (startPage < 1) {
-//       startPage = 1;
-//     }
-//   }
+// }
 
-//   //중간 페이지 버튼 반복문
-//   for (let i = startPage; i <= endPage && i <= totalPageCount; i++) {
-//     //페이지 숫자 버튼 CSS포함시킴
-//     const pageButton = multiAndSingleTagMaker(
-//       buttonList,
-//       "li",
-//       i,
-//       1,
-//       (element) => {
-//         fontAndLayoutEditor(element, "8%", "");
-//         kingGodFlexEditor(element, "", "center", "center");
-//       }
-//     );
-//     pageButton.innerHTML = i;
-//     if (i === page.currPage) {
-//       pageButton.style.fontWeight = "bold";
-//       pageButton.style.backgroundColor = "#9A6E44";
-//       pageButton.style.color = "white";
-//     } else {
-//       pageButton.addEventListener("click", () => {
-//         page.currPage = i;
-//         renderContent(boardList, page);
-//         renderButtons();
-//       });
-//       pageButton.style.fontWeight = "normal";
-//       pageButton.style.backgroundColor = "";
-//       pageButton.style.color = "black";
+// //중간 페이지 버튼 반복문
+// for (let i = startPage; i <= endPage && i <= totalPageCount; i++) {
+//   //페이지 숫자 버튼 CSS포함시킴
+//   const pageButton = multiAndSingleTagMaker(
+//     buttonList,
+//     "li",
+//     i,
+//     1,
+//     (element) => {
+//       fontAndLayoutEditor(element, "8%", "");
+//       kingGodFlexEditor(element, "", "center", "center");
 //     }
-//     buttonList.appendChild(pageButton);
+//   );
+//   pageButton.innerHTML = i;
+//   if (i === page.currPage) {
+//     pageButton.style.fontWeight = "bold";
+//     pageButton.style.backgroundColor = "#9A6E44";
+//     pageButton.style.color = "white";
+//   } else {
+//     pageButton.addEventListener("click", () => {
+//       page.currPage = i;
+//       renderContent(boardList, page);
+//       renderButtons();
+//     });
+//     pageButton.style.fontWeight = "normal";
+//     pageButton.style.backgroundColor = "";
+//     pageButton.style.color = "black";
 //   }
+//   buttonList.appendChild(pageButton);
+// }
 
 //   //다음 버튼
 //   const nextNumber = multiAndSingleTagMaker(buttonList, "li", "next-number");
@@ -193,5 +195,76 @@ const paginationCtn = multiAndSingleTagMaker(root, "div", "pagination-ctn");
 //   paginationCtn.appendChild(buttonList);
 // };
 
-renderContent(boardList, page);
-renderButtons(paginationCtn, boardList, page);
+function pagingNum() {
+  // 중간 페이지 버튼 처리
+  let startPage =
+    currPageGroup(page.currPage) * page.pageNumCount - (page.pageNumCount - 1);
+  let endPage = currPageGroup(page.currPage) * page.pageNumCount;
+
+  if (startPage < 1) {
+    startPage = 1;
+    endPage = currPageGroup(page.currPage) * page.pageNumCount - 1;
+  }
+  if (endPage > page.total) {
+    endPage = page.total;
+    startPage = endPage - page.pageNumCount + 1;
+    if (startPage < 1) {
+      startPage = 1;
+    }
+  }
+
+  //중간 페이지 버튼 반복문
+  for (let i = startPage; i <= endPage && i <= totalPageCount; i++) {
+    //페이지 숫자 버튼 CSS포함시킴
+    const firstNum = multiAndSingleTagMaker(
+      paginationCtn,
+      "div",
+      "",
+      1,
+      (element) => {
+        const pageButton = multiAndSingleTagMaker(
+          element,
+          "div",
+          i,
+          1,
+          (ele1) => {
+            fontAndLayoutEditor(ele1, "8%", "");
+            kingGodFlexEditor(ele1, "", "center", "center");
+          }
+        );
+        pageButton.innerHTML = i;
+        if (i === page.currPage) {
+          pageButton.style.fontWeight = "bold";
+          pageButton.style.backgroundColor = "#9A6E44";
+          pageButton.style.color = "white";
+        } else {
+          pageButton.addEventListener("click", () => {
+            page.currPage = i;
+            renderContent(boardList, page);
+            pagingNum();
+          });
+          pageButton.style.fontWeight = "normal";
+          pageButton.style.backgroundColor = "";
+          pageButton.style.color = "black";
+        }
+        element.appendChild(pageButton);
+      }
+    );
+  }
+}
+
+function fiveBtn() {
+  multiAndSingleTagMaker(paginationCtn, "div", "", 1, (element) => {
+    whileRemoveChild(paginationCtn);
+    pagingMakeButton(element, boardList, page, "start");
+    pagingMakeButton(element, boardList, page, "prev");
+    pagingNum();
+    pagingMakeButton(element, boardList, page, "next");
+    pagingMakeButton(element, boardList, page, "end");
+  });
+}
+
+fiveBtn();
+
+// renderContent(boardList, page);
+// renderButtons(paginationCtn, boardList, page);

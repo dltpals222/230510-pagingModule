@@ -1,5 +1,5 @@
 import all_mighty_editor from "./module/all_mighty_editor.js";
-import { mathCeil } from "./paging_etc_module.js";
+import { mathCeil, whileRemoveChild } from "./paging_etc_module.js";
 import renderContent from "./paging_render_content.js";
 
 const { multiAndSingleTagMaker } = all_mighty_editor;
@@ -40,7 +40,7 @@ function pagingMakeButton(
             parent,
             boardList,
             { total, currPage, pageNumCount, pageContentCount, img },
-            keyword
+            "start"
           );
         });
       });
@@ -58,7 +58,7 @@ function pagingMakeButton(
             parent,
             boardList,
             { total, currPage, pageNumCount, pageContentCount, img },
-            keyword
+            "prev"
           );
         });
       });
@@ -71,12 +71,13 @@ function pagingMakeButton(
           if (mathCeil(currPage) !== mathCeil(totalPageCount)) {
             currPage = mathCeil(currPage) * pageNumCount + 1;
           }
+          whileRemoveChild(element);
           renderContent(boardList, { total, currPage, pageContentCount, img });
           pagingMakeButton(
             parent,
             boardList,
             { total, currPage, pageNumCount, pageContentCount, img },
-            keyword
+            "next"
           );
         });
       });
@@ -94,7 +95,7 @@ function pagingMakeButton(
             parent,
             boardList,
             { total, currPage, pageNumCount, pageContentCount, img },
-            keyword
+            "end"
           );
         });
       });
@@ -102,4 +103,4 @@ function pagingMakeButton(
   } //switch 끝
 }
 
-// export default pagingMakeButton;
+export default pagingMakeButton;
