@@ -4,11 +4,20 @@ import { mathCeil, whileRemoveChild } from "./paging_etc_module.js";
 const { multiAndSingleTagMaker, kingGodFlexEditor, fontAndLayoutEditor } =
   all_mighty_editor;
 
+const page = {
+  total: 1151, //전체 게시글 갯수
+  pageContentCount: 4, //한페이지에 보여질 게시글 갯수
+  currPage: 1, //현재페이지
+  pageNumCount: 5, //중간 페이징 버튼 갯수
+  img: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
+};
+const { total, currPage, pageNumCount, pageContentCount, img } = page;
+
 //맨앞 버튼
 const renderButtons = (
   parent,
-  boardList,
-  { total, currPage = 1, pageNumCount = 5, pageContentCount, img }
+  boardList
+  // { total, currPage = 1, pageNumCount = 5, pageContentCount, img }
 ) => {
   const buttonList = multiAndSingleTagMaker(
     parent,
@@ -31,13 +40,7 @@ const renderButtons = (
       currPage = 1;
     }
     renderContent(boardList, page);
-    renderButtons(parent, boardList, {
-      total,
-      currPage,
-      pageNumCount,
-      pageContentCount,
-      img,
-    });
+    renderButtons(parent, boardList);
   });
 
   //이전 버튼
@@ -53,13 +56,7 @@ const renderButtons = (
       currPage = mathCeil(currPage) * pageNumCount - (pageNumCount - 1);
     }
     renderContent(boardList, page);
-    renderButtons(parent, boardList, {
-      total,
-      currPage,
-      pageNumCount,
-      pageContentCount,
-      img,
-    });
+    renderButtons(parent, boardList);
   });
 
   // 중간 페이지 버튼 처리
@@ -100,13 +97,7 @@ const renderButtons = (
       pageButton.addEventListener("click", () => {
         currPage = i;
         renderContent(boardList, page);
-        renderButtons(parent, boardList, {
-          total,
-          currPage,
-          pageNumCount,
-          pageContentCount,
-          img,
-        });
+        renderButtons(parent, boardList);
       });
       pageButton.style.fontWeight = "normal";
       pageButton.style.backgroundColor = "";
@@ -124,13 +115,7 @@ const renderButtons = (
       currPage = mathCeil(currPage) * pageNumCount + 1;
     }
     renderContent(boardList, page);
-    renderButtons(parent, boardList, {
-      total,
-      currPage,
-      pageNumCount,
-      pageContentCount,
-      img,
-    });
+    renderButtons(parent, boardList);
   });
 
   //맨뒤 버튼
@@ -142,13 +127,7 @@ const renderButtons = (
       currPage = totalPageCount;
     }
     renderContent(boardList, page);
-    renderButtons(parent, boardList, {
-      total,
-      currPage,
-      pageNumCount,
-      pageContentCount,
-      img,
-    });
+    renderButtons(parent, boardList);
   });
 
   //기존 버튼 삭제 로직
