@@ -9,3 +9,5 @@ export function whileRemoveChild(parent) {
 export function mathCeil(currPage, pageNumCount = 5) {
   return Math.ceil(currPage / pageNumCount);
 }
+
+export function objCreate() {}
