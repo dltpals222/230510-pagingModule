@@ -1,9 +1,9 @@
-import { match } from "assert";
-import all_mighty_editor from "./module/all_mighty_editor";
-import { mathCeil, whileRemoveChild } from "./paging_etc_module";
-import renderContent from "./paging_render_content";
+import all_mighty_editor from "./module/all_mighty_editor.js";
+import { mathCeil, objCreate, whileRemoveChild } from "./paging_etc_module.js";
+import renderContent from "./paging_render_content.js";
 
-const { multiAndSingleTagMaker } = all_mighty_editor;
+const { multiAndSingleTagMaker, kingGodFlexEditor, fontAndLayoutEditor } =
+  all_mighty_editor;
 
 function renderButtonContainer(
   parent,
@@ -11,6 +11,13 @@ function renderButtonContainer(
   { total, pageContentCount, currPage, pageNumCount, img }
 ) {
   const totalPageCount = mathCeil(total, pageContentCount);
+  const pageWrap = {
+    total: total,
+    pageContentCount: pageContentCount,
+    currPage: currPage,
+    pageNumCount: pageNumCount,
+    img: img,
+  };
   const renderButtons = () => {
     const buttonList = multiAndSingleTagMaker(
       parent,
@@ -30,13 +37,6 @@ function renderButtonContainer(
               currPage = 1;
             }
 
-            let pageWrap = {
-              total: total,
-              currPage: currPage,
-              pageContentCount: pageContentCount,
-              pageNumCount: pageNumCount,
-              img: img,
-            };
             renderContent(boardListParent, pageWrap);
             renderButtons();
           });
@@ -52,13 +52,6 @@ function renderButtonContainer(
               currPage = mathCeil(currPage) * pageNumCount - (pageNumCount - 1);
             }
 
-            let pageWrap = {
-              total: total,
-              currPage: currPage,
-              pageContentCount: pageContentCount,
-              pageNumCount: pageNumCount,
-              img: img,
-            };
             renderContent(boardListParent, pageWrap);
             renderButtons();
           });
@@ -120,13 +113,7 @@ function renderButtonContainer(
             if (mathCeil(currPage) !== mathCeil(totalPageCount)) {
               currPage = mathCeil(currPage) * pageNumCount + 1;
             }
-            let pageWrap = {
-              total: total,
-              currPage: currPage,
-              pageContentCount: pageContentCount,
-              pageNumCount: pageNumCount,
-              img: img,
-            };
+
             renderContent(boardListParent, pageWrap);
             renderButtons();
           });
@@ -140,13 +127,7 @@ function renderButtonContainer(
             if (mathCeil(currPage) !== mathCeil(totalPageCount)) {
               currPage = totalPageCount;
             }
-            let pageWrap = {
-              total: total,
-              currPage: currPage,
-              pageContentCount: pageContentCount,
-              pageNumCount: pageNumCount,
-              img: img,
-            };
+
             renderContent(boardListParent, pageWrap);
             renderButtons();
           });
@@ -160,13 +141,9 @@ function renderButtonContainer(
   };
 
   //마지막부분 다시 객체로 싸주고 전달할 준비 후 renderContent와 renderButtons을 실행시켜준다.
-  let pageWrap = {
-    total: total,
-    currPage: currPage,
-    pageContentCount: pageContentCount,
-    pageNumCount: pageNumCount,
-    img: img,
-  };
+
   renderContent(boardListParent, pageWrap);
   renderButtons();
 } //? renderButtonContainer 끝
+
+export default renderButtonContainer;

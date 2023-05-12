@@ -1,6 +1,7 @@
 import all_mighty_editor from "./module/all_mighty_editor.js";
 import { whileRemoveChild } from "./paging_etc_module.js";
 import pagingMakeButton from "./paging_make_button.js";
+import renderButtonContainer from "./paging_render_button_v3.js";
 // import renderButtons from "./paging_render_button.js";
 import renderContent from "./paging_render_content.js";
 
@@ -15,13 +16,13 @@ const page = {
   img: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
 };
 
-//전체 페이지 갯수(밑에 숫자 부분)
-const totalPageCount = Math.ceil(page.total / page.pageContentCount);
+// //전체 페이지 갯수(밑에 숫자 부분)
+// const totalPageCount = Math.ceil(page.total / page.pageContentCount);
 
-//화면에 보여질 페이지 그룹 함수
-function currPageGroup(currPage, pageNumCount = 5) {
-  return Math.ceil(currPage / pageNumCount);
-}
+// //화면에 보여질 페이지 그룹 함수
+// function currPageGroup(currPage, pageNumCount = 5) {
+//   return Math.ceil(currPage / pageNumCount);
+// }
 
 const root = document.getElementById("root");
 
@@ -195,76 +196,7 @@ const paginationCtn = multiAndSingleTagMaker(root, "div", "pagination-ctn");
 //   paginationCtn.appendChild(buttonList);
 // };
 
-function pagingNum() {
-  // 중간 페이지 버튼 처리
-  let startPage =
-    currPageGroup(page.currPage) * page.pageNumCount - (page.pageNumCount - 1);
-  let endPage = currPageGroup(page.currPage) * page.pageNumCount;
-
-  if (startPage < 1) {
-    startPage = 1;
-    endPage = currPageGroup(page.currPage) * page.pageNumCount - 1;
-  }
-  if (endPage > page.total) {
-    endPage = page.total;
-    startPage = endPage - page.pageNumCount + 1;
-    if (startPage < 1) {
-      startPage = 1;
-    }
-  }
-
-  //중간 페이지 버튼 반복문
-  for (let i = startPage; i <= endPage && i <= totalPageCount; i++) {
-    //페이지 숫자 버튼 CSS포함시킴
-    const firstNum = multiAndSingleTagMaker(
-      paginationCtn,
-      "div",
-      "",
-      1,
-      (element) => {
-        const pageButton = multiAndSingleTagMaker(
-          element,
-          "div",
-          i,
-          1,
-          (ele1) => {
-            fontAndLayoutEditor(ele1, "8%", "");
-            kingGodFlexEditor(ele1, "", "center", "center");
-          }
-        );
-        pageButton.innerHTML = i;
-        if (i === page.currPage) {
-          pageButton.style.fontWeight = "bold";
-          pageButton.style.backgroundColor = "#9A6E44";
-          pageButton.style.color = "white";
-        } else {
-          pageButton.addEventListener("click", () => {
-            page.currPage = i;
-            renderContent(boardList, page);
-            pagingNum();
-          });
-          pageButton.style.fontWeight = "normal";
-          pageButton.style.backgroundColor = "";
-          pageButton.style.color = "black";
-        }
-        element.appendChild(pageButton);
-      }
-    );
-  }
-}
-
-function fiveBtn() {
-  multiAndSingleTagMaker(paginationCtn, "div", "", 1, (element) => {
-    whileRemoveChild(paginationCtn);
-    pagingMakeButton(element, boardList, page, "start");
-    pagingMakeButton(element, boardList, page, "prev");
-    pagingNum();
-    pagingMakeButton(element, boardList, page, "next");
-    pagingMakeButton(element, boardList, page, "end");
-  });
-}
-
-fiveBtn();
+renderButtonContainer(paginationCtn, boardList, page);
 
 // renderContent(boardList, page);
 // renderButtons(paginationCtn, boardList, page);

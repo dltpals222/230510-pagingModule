@@ -1,2 +1,33 @@
-const mysql = require("mysql2/promise");
-const fs = require("fs"); // MySQL 데이터베이스 연결 설정 const connection = await mysql.createConnection({ host: 'localhost', user: 'yourusername', password: 'yourpassword', database: 'yourdatabase' }); // MySQL에서 데이터 조회 const [rows, fields] = await connection.execute('SELECT * FROM yourtable'); // 데이터를 JSON 형식으로 변환 const jsonData = rows.map(row => ({ RCP_PARTS_DTLS: row.RCP_PARTS_DTLS, RCP_WAY2: row.RCP_WAY2, MANUAL_IMG20: row.MANUAL_IMG20 })); // JSON 데이터를 파일로 저장 fs.writeFileSync('output.json', JSON.stringify({ COOKRCP01: { total_count: jsonData.length, row: jsonData } }));
+const page = {
+  total: 1151, //전체 게시글 갯수
+  pageContentCount: 4, //한페이지에 보여질 게시글 갯수
+  currPage: 1, //현재페이지
+  pageNumCount: 5, //중간 페이징 버튼 갯수
+  img: "https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E",
+};
+
+function objCreate(
+  total,
+  currPage = 1,
+  pageNumCount = 5,
+  pageContentCount = 4,
+  img = void 0
+) {
+  return {
+    total: total,
+    currPage: currPage,
+    pageNumCount: pageNumCount,
+    pageContentCount: pageContentCount,
+    img: img,
+  };
+}
+
+function first(parent, secondParent, { a, b, c, d, e }) {
+  const page = {
+    a: a,
+    b: b,
+    c: c,
+    d: d,
+    e: e,
+  };
+}
