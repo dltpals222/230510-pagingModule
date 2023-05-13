@@ -9,7 +9,10 @@ import { whileRemoveChild } from "./paging_etc_module.js";
 const { multiAndSingleTagMaker, allMightyStyleEditor } = all_mighty_editor;
 
 //게시글을 포함시킨 renderContent
-const renderContent = (parent, { total, currPage, pageContentCount, img }) => {
+const renderContent = (
+  parent,
+  { total, currPage = 1, pageContentCount = 4, img = void 0 }
+) => {
   whileRemoveChild(parent);
 
   for (
