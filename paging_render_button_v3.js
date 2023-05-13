@@ -2,13 +2,18 @@ import all_mighty_editor from "./module/all_mighty_editor.js";
 import { mathCeil, objCreate, whileRemoveChild } from "./paging_etc_module.js";
 import renderContent from "./paging_render_content.js";
 
+//* 첫번째 매개변수는 생성하고자 하는 위치를 적으시면 됩니다.
+//* 두번째 매개변수는 renderContent를 생성하고자 하는 위치를 적으시면 됩니다.
+//* 세번째 매개변수는 객체를 넣으시면 됩니다.
+//* 필수는 total부분만
+
 const { multiAndSingleTagMaker, kingGodFlexEditor, fontAndLayoutEditor } =
   all_mighty_editor;
 
 function renderButtonContainer(
   parent,
   boardListParent,
-  { total, pageContentCount, currPage, pageNumCount, img }
+  { total, pageContentCount = 4, currPage = 1, pageNumCount = 5, img = void 0 }
 ) {
   const totalPageCount = mathCeil(total, pageContentCount);
 
