@@ -30,4 +30,6 @@ function first(parent, secondParent, { a, b, c, d, e }) {
     d: d,
     e: e,
   };
+
+  function second() {}
 }

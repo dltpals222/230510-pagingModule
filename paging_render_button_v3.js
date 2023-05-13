@@ -11,13 +11,7 @@ function renderButtonContainer(
   { total, pageContentCount, currPage, pageNumCount, img }
 ) {
   const totalPageCount = mathCeil(total, pageContentCount);
-  const pageWrap = {
-    total: total,
-    pageContentCount: pageContentCount,
-    currPage: currPage,
-    pageNumCount: pageNumCount,
-    img: img,
-  };
+
   const renderButtons = () => {
     const buttonList = multiAndSingleTagMaker(
       parent,
@@ -36,7 +30,13 @@ function renderButtonContainer(
             if (mathCeil(currPage) !== 1) {
               currPage = 1;
             }
-
+            const pageWrap = objCreate(
+              total,
+              currPage,
+              pageNumCount,
+              pageContentCount,
+              img
+            );
             renderContent(boardListParent, pageWrap);
             renderButtons();
           });
@@ -51,7 +51,13 @@ function renderButtonContainer(
             if (mathCeil(currPage) !== 1) {
               currPage = mathCeil(currPage) * pageNumCount - (pageNumCount - 1);
             }
-
+            const pageWrap = objCreate(
+              total,
+              currPage,
+              pageNumCount,
+              pageContentCount,
+              img
+            );
             renderContent(boardListParent, pageWrap);
             renderButtons();
           });
@@ -87,13 +93,13 @@ function renderButtonContainer(
             } else {
               eleNum.addEventListener("click", () => {
                 currPage = i;
-                let pageWrap = {
-                  total: total,
-                  currPage: currPage,
-                  pageContentCount: pageContentCount,
-                  pageNumCount: pageNumCount,
-                  img: img,
-                };
+                const pageWrap = objCreate(
+                  total,
+                  currPage,
+                  pageNumCount,
+                  pageContentCount,
+                  img
+                );
                 renderContent(boardListParent, pageWrap);
                 renderButtons();
               });
@@ -113,7 +119,13 @@ function renderButtonContainer(
             if (mathCeil(currPage) !== mathCeil(totalPageCount)) {
               currPage = mathCeil(currPage) * pageNumCount + 1;
             }
-
+            const pageWrap = objCreate(
+              total,
+              currPage,
+              pageNumCount,
+              pageContentCount,
+              img
+            );
             renderContent(boardListParent, pageWrap);
             renderButtons();
           });
@@ -127,7 +139,13 @@ function renderButtonContainer(
             if (mathCeil(currPage) !== mathCeil(totalPageCount)) {
               currPage = totalPageCount;
             }
-
+            const pageWrap = objCreate(
+              total,
+              currPage,
+              pageNumCount,
+              pageContentCount,
+              img
+            );
             renderContent(boardListParent, pageWrap);
             renderButtons();
           });
@@ -141,7 +159,13 @@ function renderButtonContainer(
   };
 
   //마지막부분 다시 객체로 싸주고 전달할 준비 후 renderContent와 renderButtons을 실행시켜준다.
-
+  const pageWrap = objCreate(
+    total,
+    currPage,
+    pageNumCount,
+    pageContentCount,
+    img
+  );
   renderContent(boardListParent, pageWrap);
   renderButtons();
 } //? renderButtonContainer 끝
